@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface SchedulingAlgorithm {
       void schedule(List<ProcessControlBlock> processList);
+      void displayResults();
 }

@@ -13,72 +13,68 @@ import java.util.List;
  * @author safa
  */
 public class FirstComeFirstServed implements SchedulingAlgorithm {
-
+    private List<GanttEntry> ganttEntries;
+    private int lastEndTime;  
+    private int totalWaitingTime;
+    private int totalTurnaroundTime;
+    private int totalBurstTime;
     private int contextSwitchTime;
 
     public FirstComeFirstServed(int contextSwitchTime) {
-        this.contextSwitchTime = contextSwitchTime;
+        ganttEntries = new ArrayList<>();
+        lastEndTime = 0;  
+        totalWaitingTime = 0;
+        totalTurnaroundTime = 0;
+        totalBurstTime = 0;
+        this.contextSwitchTime=contextSwitchTime;
     }
 
-    @Override
-    public void schedule(List<ProcessControlBlock> processList) {
-
-        if (processList.isEmpty()) {
-            System.out.println("No processes to schedule.");
-            return;
-        }
-
-        List<GanttEntry> ganttChart = new ArrayList<>();
-        int currentTime = 0;
-        int totalWaitingTime = 0;
-        int totalTurnaroundTime = 0;
-        int totalBurstTime = 0;
-        int totalCpuIdel = 0;
-
-        int index = 0;
-        while (index < processList.size()) {
-            ProcessControlBlock currentProcess = processList.get(index);
-
-            if (currentTime < currentProcess.getArrivalTime()) {
-                totalCpuIdel += currentProcess.getArrivalTime() - currentTime;
-                currentTime = currentProcess.getArrivalTime();
-            }
-
-            ganttChart.add(new GanttEntry(currentProcess.getProcessId(), currentTime, currentProcess.getBurstTime()));
-
-            currentProcess.setWaitingTime(currentTime - currentProcess.getArrivalTime());
-            totalWaitingTime += currentProcess.getWaitingTime();
-
-            int executionTime = currentProcess.getBurstTime();
-            totalBurstTime += executionTime;
-            currentTime += executionTime;
-
-            int turnaroundTime = currentTime - currentProcess.getArrivalTime();
-            currentProcess.setTurnaroundTime(turnaroundTime);
-            totalTurnaroundTime += turnaroundTime;
-
-            currentTime += contextSwitchTime;
-
-            currentProcess.setFinishTime(currentTime - contextSwitchTime);
-            index++;
-        }
+    public void schedule(List<ProcessControlBlock> processes) {
+        processes.sort((p1, p2) -> Integer.compare(p1.getArrivalTime(), p2.getArrivalTime())); 
 
         System.out.println("********************************************************************");
         System.out.println("FCFS Scheduling with Context Switch Time " + contextSwitchTime + ":\n");
 
-        for (ProcessControlBlock process : processList) {
+        for (ProcessControlBlock process : processes) {
+            int waitingTime = Math.max(0, lastEndTime - process.getArrivalTime());
+            totalWaitingTime += waitingTime;
 
-            System.out.println("Process" + process.getProcessId() + ": Finish = " + process.getFinishTime() + ", waiting = " + process.getWaitingTime() + ", TurnaroundTime = " + process.getTurnaroundTime());
+            if (process.getArrivalTime() > lastEndTime) {
+                ganttEntries.add(new GanttEntry(-1, lastEndTime, process.getArrivalTime() - lastEndTime, "Idle"));
+                lastEndTime = process.getArrivalTime();
+            }
+
+            ganttEntries.add(new GanttEntry(process.getProcessId(), lastEndTime, process.getBurstTime(), "Process"));
+            lastEndTime += process.getBurstTime();
+   
+            int finishTime = lastEndTime;
+            int turnaroundTime = finishTime - process.getArrivalTime();
+            totalTurnaroundTime += turnaroundTime;
+            totalBurstTime += process.getBurstTime();
+
+            System.out.println("Process" + process.getProcessId() + ": Finish = " + finishTime + ", waiting = " + waitingTime + ", TurnaroundTime = " + turnaroundTime);
+
+            if (contextSwitchTime > 0) {
+                ganttEntries.add(new GanttEntry(-1, lastEndTime, contextSwitchTime, "ContextSwitch"));
+                lastEndTime += contextSwitchTime;  
+            }
         }
 
-        System.out.println("\nAverage Waiting Time: " + ((double) totalWaitingTime / ganttChart.size()));
-        System.out.println("Average Turnaround Time: " + ((double) totalTurnaroundTime / ganttChart.size()));
+        if (!ganttEntries.isEmpty() && "ContextSwitch".equals(ganttEntries.get(ganttEntries.size() - 1).getEntryType())) {
+            ganttEntries.remove(ganttEntries.size() - 1);
+            lastEndTime -= contextSwitchTime;
+        }
 
-        double cpuUtilization = (double) totalBurstTime / (currentTime - 1) * 100;
+        double averageWaitingTime = (double) totalWaitingTime / processes.size();
+        double averageTurnaroundTime = (double) totalTurnaroundTime / processes.size();
+        double cpuUtilization = (double) totalBurstTime / (lastEndTime ) * 100;
+
+        System.out.println("\nAverage Waiting Time: " + averageWaitingTime);
+        System.out.println("Average Turnaround Time: " + averageTurnaroundTime);
         System.out.println("CPU Utilization: " + cpuUtilization + "%\n");
+    }
 
-        GanttChart.drawGanttChart(ganttChart, contextSwitchTime);
-        
-        System.out.println("********************************************************************"); 
+    public void displayResults() {
+        GanttChart.drawGanttChart(ganttEntries);
     }
 }

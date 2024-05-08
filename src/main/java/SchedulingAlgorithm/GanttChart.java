@@ -11,29 +11,21 @@ import java.util.List;
  * @author safa
  */
 public class GanttChart {
-      public static void drawGanttChart(List<GanttEntry> ganttChart, int contextSwitchTime) {
+         public static void drawGanttChart(List<GanttEntry> ganttChart) {
         System.out.println("Gantt Chart:");
-        System.out.print("|");
 
+        int currentTime = 0;
+        System.out.printf("0 |==");
         for (GanttEntry entry : ganttChart) {
-            System.out.printf(" P%d |", entry.getProcessId());
+            if ("ContextSwitch".equals(entry.getEntryType())) {
+                System.out.printf("S==| %d |==", entry.getStartTime() + entry.getExecutionTime());
+            } else if ("Idle".equals(entry.getEntryType())) {
+                System.out.printf("I==| %d |==", entry.getStartTime() + entry.getExecutionTime());
+            } else {
+                System.out.printf("P%d==| %d |==", entry.getProcessId(), entry.getStartTime() + entry.getExecutionTime());
+            }
+            currentTime = entry.getStartTime() + entry.getExecutionTime();
         }
         System.out.println();
-        
-        System.out.print("0");
-        int endTime = 0;
-        for (GanttEntry entry : ganttChart) {
-            for (int i = 0; i < entry.getStartTime() - endTime; i++) {
-                System.out.print(" ");
-            }
-
-            for (int i = 0; i < entry.getExecutionTime(); i++) {
-                System.out.print("-");
-            }
-            endTime = entry.getStartTime() + entry.getExecutionTime();
-            System.out.print(endTime);
-        }
-        System.out.println();
-      }
-
+    }
 }

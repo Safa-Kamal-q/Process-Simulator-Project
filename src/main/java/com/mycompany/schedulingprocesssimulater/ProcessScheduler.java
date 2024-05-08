@@ -20,5 +20,6 @@ public class ProcessScheduler {
 
     public void runScheduler(List<ProcessControlBlock> processList) {
         schedulingAlgorithm.schedule(processList);
+        schedulingAlgorithm.displayResults();
     }
 }
