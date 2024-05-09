@@ -12,14 +12,18 @@ import java.util.List;
  * @author safa
  */
 public class ProcessScheduler {
-    private SchedulingAlgorithm schedulingAlgorithm;
 
-    public ProcessScheduler(SchedulingAlgorithm schedulingAlgorithm) {
-        this.schedulingAlgorithm = schedulingAlgorithm;
+    private SchedulingAlgorithm[] schedulingAlgorithms;
+
+    public ProcessScheduler(SchedulingAlgorithm[] schedulingAlgorithms) {
+        this.schedulingAlgorithms = schedulingAlgorithms;
     }
 
     public void runScheduler(List<ProcessControlBlock> processList) {
-        schedulingAlgorithm.schedule(processList);
-        schedulingAlgorithm.displayResults();
+        
+        for (SchedulingAlgorithm schedulingAlgorithm : schedulingAlgorithms) {
+            schedulingAlgorithm.schedule(processList);
+            schedulingAlgorithm.drawChart();
+        }
     }
 }

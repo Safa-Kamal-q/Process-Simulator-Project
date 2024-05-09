@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package SchedulingAlgorithm;
+package GanttChart;
 
 import java.util.List;
 
@@ -11,7 +11,8 @@ import java.util.List;
  * @author safa
  */
 public class GanttChart {
-         public static void drawGanttChart(List<GanttEntry> ganttChart) {
+
+    public static void drawGanttChart(List<GanttEntry> ganttChart) {
         System.out.println("Gantt Chart:");
 
         int currentTime = 0;

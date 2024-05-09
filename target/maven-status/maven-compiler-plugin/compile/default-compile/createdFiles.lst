@@ -1,8 +1,9 @@
 com\mycompany\schedulingprocesssimulater\ProcessScheduler.class
 SchedulingAlgorithm\SchedulingAlgorithm.class
+GanttChart\GanttEntry.class
 SchedulingAlgorithm\FirstComeFirstServed.class
-SchedulingAlgorithm\GanttChart.class
 com\mycompany\schedulingprocesssimulater\SchedulingProcessSimulater.class
 com\mycompany\schedulingprocesssimulater\InputHanfler\InputFileReader.class
-SchedulingAlgorithm\GanttEntry.class
+GanttChart\GanttChart.class
 com\mycompany\schedulingprocesssimulater\ProcessControlBlock.class
+SchedulingAlgorithm\ShortestRemainingTime.class

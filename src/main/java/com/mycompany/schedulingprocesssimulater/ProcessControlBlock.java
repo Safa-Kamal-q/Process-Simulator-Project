@@ -9,6 +9,7 @@ package com.mycompany.schedulingprocesssimulater;
  * @author safa
  */
 public class ProcessControlBlock {
+
     private int processId;
     private int arrivalTime;
     private int burstTime;
@@ -16,6 +17,7 @@ public class ProcessControlBlock {
     private int waitingTime;
     private int turnaroundTime;
     private int finishTime;
+    private int startTime;
 
     public ProcessControlBlock(int processId, int arrivalTime, int burstTime) {
         this.processId = processId;
@@ -25,6 +27,7 @@ public class ProcessControlBlock {
         this.waitingTime = 0;
         this.turnaroundTime = 0;
         this.finishTime = 0;
+        this.startTime = 0;
     }
 
     public int getProcessId() {
@@ -62,7 +65,7 @@ public class ProcessControlBlock {
     public void setTurnaroundTime(int turnaroundTime) {
         this.turnaroundTime = turnaroundTime;
     }
-    
+
     public int getFinishTime() {
         return finishTime;
     }
@@ -71,13 +74,21 @@ public class ProcessControlBlock {
         this.finishTime = finishTime;
     }
 
+    public int getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
+
     @Override
     public String toString() {
-        return "Process ID: " + processId +
-               ", Arrival Time: " + arrivalTime +
-               ", Burst Time: " + burstTime +
-               ", Remaining Burst Time: " + remainingBurstTime +
-               ", Waiting Time: " + waitingTime +
-               ", Turnaround Time: " + turnaroundTime;
+        return "Process ID: " + processId
+                + ", Arrival Time: " + arrivalTime
+                + ", Burst Time: " + burstTime
+                + ", Remaining Burst Time: " + remainingBurstTime
+                + ", Waiting Time: " + waitingTime
+                + ", Turnaround Time: " + turnaroundTime;
     }
 }

@@ -4,6 +4,8 @@
  */
 package SchedulingAlgorithm;
 
+import GanttChart.GanttEntry;
+import GanttChart.GanttChart;
 import com.mycompany.schedulingprocesssimulater.ProcessControlBlock;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +76,8 @@ public class FirstComeFirstServed implements SchedulingAlgorithm {
         System.out.println("CPU Utilization: " + cpuUtilization + "%\n");
     }
 
-    public void displayResults() {
+    public void drawChart() {
         GanttChart.drawGanttChart(ganttEntries);
+        System.out.println("********************************************************************");
     }
 }
