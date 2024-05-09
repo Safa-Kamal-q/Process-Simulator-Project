@@ -4,6 +4,7 @@
 package com.mycompany.schedulingprocesssimulater;
 
 import SchedulingAlgorithm.FirstComeFirstServed;
+import SchedulingAlgorithm.RoundRobin;
 import SchedulingAlgorithm.SchedulingAlgorithm;
 import SchedulingAlgorithm.ShortestRemainingTime;
 import com.mycompany.schedulingprocesssimulater.InputHanfler.InputFileReader;
@@ -19,13 +20,16 @@ public class SchedulingProcessSimulater {
 
         List<ProcessControlBlock> processList = InputFileReader.readProcessesFromFile("C:\\Users\\safa\\Desktop\\input.txt");
 
-        SchedulingAlgorithm[] algorithms = new SchedulingAlgorithm[2];
+        SchedulingAlgorithm[] algorithms = new SchedulingAlgorithm[3];
 
         FirstComeFirstServed fcfsAlgorithm = new FirstComeFirstServed(1);
         algorithms[0] = fcfsAlgorithm;
 
         ShortestRemainingTime srtAlgorithm = new ShortestRemainingTime(1);
         algorithms[1] = srtAlgorithm;
+        
+        RoundRobin rrAlgorithm = new RoundRobin(2, 1);
+        algorithms[2] = rrAlgorithm;
 
         ProcessScheduler scheduler = new ProcessScheduler(algorithms);
 
