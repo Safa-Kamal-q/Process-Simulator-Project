@@ -108,7 +108,7 @@ public class ShortestRemainingTime implements SchedulingAlgorithm {
             totalTurnaroundTime += process.getTurnaroundTime();
             endTime = Math.max(endTime, process.getFinishTime());
             System.out.println("Process" + process.getProcessId() + ": Finish = " + process.getFinishTime() + ", waiting = " + process.getWaitingTime() + ", TurnaroundTime = " + process.getTurnaroundTime());
-            
+
             process.setWaitingTime(0);
             process.setFinishTime(0);
             process.setTurnaroundTime(0);
@@ -122,8 +122,6 @@ public class ShortestRemainingTime implements SchedulingAlgorithm {
         System.out.println("\nAverage Waiting Time: " + averageWaitingTime);
         System.out.println("Average Turnaround Time: " + averageTurnaroundTime);
         System.out.println("CPU Utilization: " + cpuUtilization + "%\n");
-        
-        
     }
 
     public void drawChart() {

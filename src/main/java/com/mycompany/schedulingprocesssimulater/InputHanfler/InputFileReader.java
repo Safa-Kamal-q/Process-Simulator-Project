@@ -16,8 +16,8 @@ import java.util.List;
  * @author safa
  */
 public class InputFileReader {
-    
-      public static List<ProcessControlBlock> readProcessesFromFile(String filename) {
+
+    public static List<ProcessControlBlock> readProcessesFromFile(String filename) {
         List<ProcessControlBlock> processList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;

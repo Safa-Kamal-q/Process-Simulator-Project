@@ -20,7 +20,7 @@ public class ProcessScheduler {
     }
 
     public void runScheduler(List<ProcessControlBlock> processList) {
-        
+
         for (SchedulingAlgorithm schedulingAlgorithm : schedulingAlgorithms) {
             schedulingAlgorithm.schedule(processList);
             schedulingAlgorithm.drawChart();

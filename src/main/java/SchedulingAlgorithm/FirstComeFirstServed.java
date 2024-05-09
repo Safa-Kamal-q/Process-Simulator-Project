@@ -15,8 +15,9 @@ import java.util.List;
  * @author safa
  */
 public class FirstComeFirstServed implements SchedulingAlgorithm {
+
     private List<GanttEntry> ganttEntries;
-    private int currentTime;  
+    private int currentTime;
     private int totalWaitingTime;
     private int totalTurnaroundTime;
     private int totalBurstTime;
@@ -24,15 +25,15 @@ public class FirstComeFirstServed implements SchedulingAlgorithm {
 
     public FirstComeFirstServed(int contextSwitchTime) {
         ganttEntries = new ArrayList<>();
-        currentTime = 0;  
+        currentTime = 0;
         totalWaitingTime = 0;
         totalTurnaroundTime = 0;
         totalBurstTime = 0;
-        this.contextSwitchTime=contextSwitchTime;
+        this.contextSwitchTime = contextSwitchTime;
     }
 
     public void schedule(List<ProcessControlBlock> processes) {
-        processes.sort((p1, p2) -> Integer.compare(p1.getArrivalTime(), p2.getArrivalTime())); 
+        processes.sort((p1, p2) -> Integer.compare(p1.getArrivalTime(), p2.getArrivalTime()));
 
         System.out.println("********************************************************************");
         System.out.println("FCFS Scheduling with Context Switch Time " + contextSwitchTime + ":\n");
@@ -48,7 +49,7 @@ public class FirstComeFirstServed implements SchedulingAlgorithm {
 
             ganttEntries.add(new GanttEntry(process.getProcessId(), currentTime, process.getBurstTime(), "Process"));
             currentTime += process.getBurstTime();
-   
+
             int finishTime = currentTime;
             int turnaroundTime = finishTime - process.getArrivalTime();
             totalTurnaroundTime += turnaroundTime;
@@ -73,7 +74,7 @@ public class FirstComeFirstServed implements SchedulingAlgorithm {
 
         double averageWaitingTime = (double) totalWaitingTime / processes.size();
         double averageTurnaroundTime = (double) totalTurnaroundTime / processes.size();
-        double cpuUtilization = (double) totalBurstTime / (currentTime ) * 100;
+        double cpuUtilization = (double) totalBurstTime / (currentTime) * 100;
 
         System.out.println("\nAverage Waiting Time: " + averageWaitingTime);
         System.out.println("Average Turnaround Time: " + averageTurnaroundTime);
