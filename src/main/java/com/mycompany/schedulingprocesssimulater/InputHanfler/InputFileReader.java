@@ -17,17 +17,30 @@ import java.util.List;
  */
 public class InputFileReader {
 
+    public static int contextSwitchTime;
+    public static int quantum;
+
     public static List<ProcessControlBlock> readProcessesFromFile(String filename) {
         List<ProcessControlBlock> processList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+
+            int numberOfProcesses = Integer.parseInt(reader.readLine());
+            int index = 1;
+
             String line;
-            while ((line = reader.readLine()) != null) {
+            while (index <= numberOfProcesses) {
+                line = reader.readLine();
                 String[] tokens = line.split(",");
                 int processId = Integer.parseInt(tokens[0].trim());
                 int arrivalTime = Integer.parseInt(tokens[1].trim());
                 int burstTime = Integer.parseInt(tokens[2].trim());
                 processList.add(new ProcessControlBlock(processId, arrivalTime, burstTime));
+                index++;
             }
+
+            contextSwitchTime = Integer.parseInt(reader.readLine());
+            quantum = Integer.parseInt(reader.readLine());
+
         } catch (IOException e) {
             System.out.println(e);
         }

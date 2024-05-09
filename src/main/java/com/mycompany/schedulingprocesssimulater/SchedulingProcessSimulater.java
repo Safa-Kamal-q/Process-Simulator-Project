@@ -27,13 +27,13 @@ public class SchedulingProcessSimulater {
 
         SchedulingAlgorithm[] algorithms = new SchedulingAlgorithm[3];
 
-        FirstComeFirstServed fcfsAlgorithm = new FirstComeFirstServed(1);
+        FirstComeFirstServed fcfsAlgorithm = new FirstComeFirstServed(InputFileReader.contextSwitchTime);
         algorithms[0] = fcfsAlgorithm;
 
-        ShortestRemainingTime srtAlgorithm = new ShortestRemainingTime(1);
+        ShortestRemainingTime srtAlgorithm = new ShortestRemainingTime(InputFileReader.contextSwitchTime);
         algorithms[1] = srtAlgorithm;
 
-        RoundRobin rrAlgorithm = new RoundRobin(2, 1);
+        RoundRobin rrAlgorithm = new RoundRobin(InputFileReader.quantum, InputFileReader.contextSwitchTime);
         algorithms[2] = rrAlgorithm;
 
         ProcessScheduler scheduler = new ProcessScheduler(algorithms);
