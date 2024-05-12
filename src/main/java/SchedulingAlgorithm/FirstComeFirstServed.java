@@ -57,9 +57,8 @@ public class FirstComeFirstServed implements SchedulingAlgorithm {
 
             System.out.println("Process" + process.getProcessId() + ": Finish = " + finishTime + ", waiting = " + waitingTime + ", TurnaroundTime = " + turnaroundTime);
 
-            if (contextSwitchTime > 0 && process != processes.get(processes.size() - 1)) {
+            if (contextSwitchTime > 0 ) {
                 if ((processes.indexOf(process) + 1 < processes.size()) && processes.get(processes.indexOf(process) + 1).getArrivalTime() > currentTime) {
-                    // Don't add a context switch before idle
                 } else {
                     ganttEntries.add(new GanttEntry(-1, currentTime, contextSwitchTime, "ContextSwitch"));
                     currentTime += contextSwitchTime;

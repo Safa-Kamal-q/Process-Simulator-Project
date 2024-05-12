@@ -57,28 +57,27 @@ public class ShortestRemainingTime implements SchedulingAlgorithm {
 
             if (selectedProcess == -1) {
                 int nextArrivalTime = Integer.MAX_VALUE;
-                for (ProcessControlBlock p : processes) {
-                    if (!completed[processes.indexOf(p)] && p.getArrivalTime() > currentTime) {
-                        nextArrivalTime = Math.min(nextArrivalTime, p.getArrivalTime());
+
+                for (int i = 0; i < processes.size(); i++) {
+                    ProcessControlBlock process = processes.get(i);
+                    if (!completed[i] && process.getArrivalTime() > currentTime) {
+                        nextArrivalTime = Math.min(nextArrivalTime, process.getArrivalTime());
                     }
                 }
-                if (nextArrivalTime > currentTime) {
-                    ganttEntries.add(new GanttEntry(-1, currentTime, nextArrivalTime - currentTime, "Idle"));
-                    currentTime = nextArrivalTime;
-                    prevSelected = -1;
-                }
+
+                ganttEntries.add(new GanttEntry(-1, currentTime, nextArrivalTime - currentTime, "Idle"));
+                currentTime = nextArrivalTime;
+                prevSelected = -1;
 
             } else {
 
                 ProcessControlBlock currentProcess = processes.get(selectedProcess);
-                int remainingTime = currentProcess.getRemainingBurstTime() - 1;
-                currentProcess.setRemainingBurstTime(remainingTime);
+                currentProcess.setRemainingBurstTime(currentProcess.getRemainingBurstTime() - 1);
 
                 if (prevSelected != selectedProcess && prevSelected != -1) {
                     if (processes.get(prevSelected).getRemainingBurstTime() != 0) {
                         ProcessControlBlock prevProcess = processes.get(prevSelected);
-
-                        ganttEntries.add(new GanttEntry(prevProcess.getProcessId(), burstStartTime - 1, prevProcess.getBurstTime() - prevProcess.getRemainingBurstTime(), "Process"));
+                        ganttEntries.add(new GanttEntry(prevProcess.getProcessId(), burstStartTime - contextSwitchTime, prevProcess.getBurstTime() - prevProcess.getRemainingBurstTime(), "Process"));
                     }
                     ganttEntries.add(new GanttEntry(-1, currentTime, contextSwitchTime, "ContextSwitch"));
                     currentTime += contextSwitchTime;

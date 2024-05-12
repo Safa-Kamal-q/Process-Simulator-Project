@@ -37,37 +37,24 @@ public class RoundRobin implements SchedulingAlgorithm {
 
     @Override
     public void schedule(List<ProcessControlBlock> processes) {
+        processes.sort((p1, p2) -> Integer.compare(p1.getArrivalTime(), p2.getArrivalTime()));
+
         System.out.println("********************************************************************");
         System.out.println("RR Scheduling with Context Switch Time " + contextSwitchTime + ":\n");
 
-        Collections.sort(processes, new Comparator<ProcessControlBlock>() {
-            @Override
-            public int compare(ProcessControlBlock p1, ProcessControlBlock p2) {
-                return Integer.compare(p1.getArrivalTime(), p2.getArrivalTime());
-            }
-        });
-        processQueue.addAll(processes.stream()
-                .sorted(Comparator.comparingInt(ProcessControlBlock::getArrivalTime))
-                .collect(Collectors.toList()));
+        processQueue.addAll(processes);
         ProcessControlBlock lastProcess = null;
-        int index = 0;
 
         while (!processQueue.isEmpty() || processes.stream().anyMatch(p -> p.getFinishTime() == 0)) {
             ProcessControlBlock currentProcess = processQueue.poll();
 
             boolean isTheLastIdle = false;
             if (currentProcess.getArrivalTime() > currentTime) {
-                int nextArrivalTime = processes.stream()
-                        .filter(p -> p.getFinishTime() == 0 && p.getArrivalTime() > currentTime)
-                        .mapToInt(ProcessControlBlock::getArrivalTime)
-                        .min()
-                        .orElse(currentTime);
+                int nextArrivalTime = currentProcess.getArrivalTime();
+                ganttEntries.add(new GanttEntry(-1, currentTime, nextArrivalTime - currentTime, "Idle"));
+                currentTime = nextArrivalTime;
+                isTheLastIdle = true;
 
-                if (nextArrivalTime > currentTime) {
-                    ganttEntries.add(new GanttEntry(-1, currentTime, nextArrivalTime - currentTime, "Idle"));
-                    currentTime = nextArrivalTime;
-                    isTheLastIdle = true;
-                }
             }
 
             if (lastProcess != null && lastProcess != currentProcess && !isTheLastIdle) {

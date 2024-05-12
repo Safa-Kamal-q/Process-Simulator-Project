@@ -6,6 +6,5 @@ SchedulingAlgorithm\FirstComeFirstServed.class
 com\mycompany\schedulingprocesssimulater\SchedulingProcessSimulater.class
 com\mycompany\schedulingprocesssimulater\InputHanfler\InputFileReader.class
 GanttChart\GanttChart.class
-SchedulingAlgorithm\RoundRobin$1.class
 com\mycompany\schedulingprocesssimulater\ProcessControlBlock.class
 SchedulingAlgorithm\ShortestRemainingTime.class
